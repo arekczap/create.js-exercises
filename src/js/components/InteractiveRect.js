@@ -7,30 +7,32 @@ let KEYCODE_LEFT = 37
 let KEYCODE_RIGHT = 39
 
 export default class InteractiveRect extends createjs.Shape {
-  constructor(width, height) {
+  constructor(width, height, posX, posY) {
     super()
     this.width = width
     this.height = height
     this.velX = 5
     this.velY = 5
+    this.posX = posX
+    this.posY = posY
 
 
     this.inputDirection = {x:  this.velX, y: 0}
 
-    this.setRandomRect()
+    this.setRect()
     // this.on('mousedown', this.onClick)
     // this.on('pressmove', this.moveRectWithMouse)
     window.onkeydown = this.changePlayerDirection
-    createjs.Ticker.on('tick', this.playerMovement)
-    createjs.Ticker.framerate = 60
+    // createjs.Ticker.on('tick', this.playerMovement)
+    // createjs.Ticker.framerate = 60
   }
 
 
 
-  setRandomRect = () => {
+  setRect = () => {
     this.set({
-      x: Math.random() * (window.innerWidth - this.width),
-      y: Math.random() * (window.innerHeight  - this.height)
+      x: this.posX,
+      y: this.posY
     })
     this.graphics
         .clear()
@@ -48,7 +50,7 @@ export default class InteractiveRect extends createjs.Shape {
 
   collisionDetection = () => {
     if (this.x + this.width > window.innerWidth || this.x<= 0 || this.y + this.height > window.innerHeight || this.y<= 0) {
-      this.setRandomRect()
+      // this.setRandomRect()
     }
   }
 
