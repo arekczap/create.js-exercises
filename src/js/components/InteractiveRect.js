@@ -17,27 +17,22 @@ export default class InteractiveRect extends createjs.Shape {
     this.posY = posY
 
 
-    this.inputDirection = {x:  this.velX, y: 0}
+    // this.inputDirection = {x:  this.velX, y: 0}
 
     this.setRect()
     // this.on('mousedown', this.onClick)
     // this.on('pressmove', this.moveRectWithMouse)
-    window.onkeydown = this.changePlayerDirection
+    // window.onkeydown = this.changePlayerDirection
     // createjs.Ticker.on('tick', this.playerMovement)
     // createjs.Ticker.framerate = 60
   }
 
 
-
   setRect = () => {
-    this.set({
-      x: this.posX,
-      y: this.posY
-    })
     this.graphics
         .clear()
         .beginFill('black')
-        .drawRect(0, 0, this.width, this.height)
+        .drawRect(this.posX, this.posY, this.width, this.height)
   }
 
   onClick = (evt) => {
