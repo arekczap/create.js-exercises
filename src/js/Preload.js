@@ -6,7 +6,7 @@ export default class Preload extends createjs.LoadQueue{
         this.game = game
         this.installPlugin(createjs.Sound)
         this.setMaxConnections(16)
-        // this.on('complete', this.handleComplete, this)
+        this.on('complete', this.handleComplete, this)
         this.on('fileload', this.handleFileLoad, this)
 
         this.loadManifest([
@@ -22,14 +22,12 @@ export default class Preload extends createjs.LoadQueue{
             const image = new createjs.Bitmap(evt.result)
             image.width = evt.result.width
             image.height = evt.result.height
-
-
-
             this.game.images[item.id] = image
         }
     }
 
     handleComplete() {
+        console.log('zaladowano')
         this.game.buildGame()
     }
 

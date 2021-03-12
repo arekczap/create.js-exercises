@@ -1,6 +1,7 @@
 import EventEmmiter from 'eventemitter3'
 import InteractiveRect from './components/InteractiveRect'
 import Preload from './Preload'
+import AnimationRect from './AnimationRect'
 
 const createjs = window.createjs
 
@@ -12,17 +13,19 @@ export default class Game extends EventEmmiter {
     this.images = {}
 
     new Preload(this)
+    this.rect = new InteractiveRect(this, 25, 25)
+    // this.rect1 = new InteractiveRect(50, 50, this.canvas.width - 50, this.canvas.height - 50)
+    this.animationRect = new AnimationRect(this)
+
     this.prepareCanvas()
-
-
   }
 
   prepareCanvas() {
     this.canvas = document.createElement('canvas')
-
     document.body.appendChild(this.canvas)
 
-
+    this.canvas.width = window.innerWidth
+    this.canvas.height = window.innerHeight
 
     Object.assign(this.canvas.style, {
       width: window.innerWidth   + 'px',
@@ -34,18 +37,19 @@ export default class Game extends EventEmmiter {
 
     // this.resizeWindow()
 
+
     this.stage = new createjs.Stage(this.canvas)
     this.stage.enableMouseOver()
     createjs.Touch.enable(this.stage)
 
+    this.rect.setRect(this.canvas.width /2, 50)
 
-    this.buildGame()
     this.update()
   }
 
   resizeWindow() {
     let debounceTimer
-    const {background} = this.images
+    // const {background} = this.images
     window.addEventListener('resize', () => {
       clearTimeout(debounceTimer)
       debounceTimer = setTimeout(() => {
@@ -53,18 +57,13 @@ export default class Game extends EventEmmiter {
         this.canvas.height= window.innerHeight
         this.canvas.style.width = window.innerWidth   + 'px'
         this.canvas.style.height = window.innerHeight  + 'px'
+        this.rect.setRect(this.canvas.width /2, 50)
       }, 50)
     })
-
-    console.log(background)
   }
 
   buildGame() {
-    // const {background} = this.images
-    const rect = new InteractiveRect(20, 20, this.canvas.width /  2  , 20)
-    // const rect1 = new InteractiveRect(20, 20, this.canvas.width - 20, this.canvas.height - 20)
-
-    this.stage.addChild(rect)
+    this.stage.addChild(this.rect)
   }
 
   update = () => {
